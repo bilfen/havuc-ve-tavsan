@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="tr">
+ <head><script src="/codelet/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..hBANbWAdAsg6BH-K.aEJFuIS5A62YOLPDGD6vxjV4bvB8kYf-kYrqcJ4jGdDidu03gDyVuLDDrfpyZtBxKBW_AfjYj2GDl4DlUY_vzIWvgvuseuPqqsH6xYaYXrXLw8VS9M_KI-_KCxk87Mh4RWIrWut9xLqzjEAmHRFgeUBODchSGwHfRSU1W5yudwnodjuJ9yxW32Sm-ckkkl8fnOX_5hoqk4FCD6Xh1mzqbqLb2sVV-N2G61EZEKvRJecT7p60V2hzqGEstLjWWYueNBI2mwKpiYdKzyiCSRVz7gJbaNXxbco85ghnxM-5ZB3NSOtsS3VDBOE83hJ_387yLiE-lNFGuSBhqQay_x5Ovrbz6Hmvi8tU1_fTbqbc2erEUXOw9JRx4y1kG8Tx4BgsVxRDakgdsNjoSQgbduLwcsvqx1klQPYkQcBQpGFRY3yNgTry9hh2ji8PVy1IhsvIgnIX6jwLdzjp8QLkwOU_RVVbJkVj3s3RDlypdKbg-Knv3aBbYpPMAm4V4RuBGnWoRJBQ4G_z9-NvxhQk-W9OwMvPX3757PRdScRstXa_mcMo_ru4gEIuBOiOKmfNOVOXfQfoauC0L2m-_YaMhlK_Rv2imc8WcYdvqT5C.vKsVZ0fsOhBcf1nzN5wM3w/telemetry_sdk.js?pin_id=c014ccc3c339735838d177ccab40e974"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Havuç ve Tavşan</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;family=Fredoka:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --navy:#17345e; --blue:#1565c0; --sky:#dff3ff; --grass:#edf9dd; --orange:#ff8b1f; --ink:#26374c; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:calc(100 * min(var(--vh, 1vh), 1vh)); font-family:"DM Sans",sans-serif; color:var(--ink); overflow-x:hidden; }
+    button { font-family:inherit; }
+    button:focus-visible { outline:4px solid #ffcb45; outline-offset:4px; }
+    .app-wrapper { width:100%; min-height:calc(100 * min(var(--vh, 1vh), 1vh)); padding:20px; background-image:radial-gradient(circle at 8% 8%,rgba(255,215,82,.3) 0 4px,transparent 5px),radial-gradient(circle at 93% 16%,rgba(79,161,75,.25) 0 7px,transparent 8px); }
+    .welcome-screen { width:100%; min-height:calc(100 * min(var(--vh, 1vh), 1vh)); display:flex; align-items:center; justify-content:center; padding:24px; background:linear-gradient(135deg,#0a4794,#1565c0 55%,#2785d5); }
+    .welcome-card { width:min(100%,660px); text-align:center; padding:42px 28px; border:2px solid rgba(255,255,255,.26); border-radius:34px; background:rgba(10,45,100,.28); box-shadow:0 24px 60px rgba(0,28,78,.35); animation:rise .55s ease-out; }
+    .welcome-logo-box { width:210px; height:102px; margin:0 auto 25px; display:flex; align-items:center; justify-content:center; padding:9px; border-radius:18px; background:#fff; box-shadow:0 10px 25px rgba(0,29,72,.25); }
+    .welcome-logo-box img { width:100%; height:100%; object-fit:contain; }
+    .welcome-card h1 { margin:0; font-family:"Fredoka",sans-serif; }
+    .welcome-card p { max-width:460px; margin:12px auto 30px; line-height:1.55; }
+    .play-button { width:104px; height:104px; border:5px solid rgba(255,255,255,.78); border-radius:50%; color:#1565c0; background:#fff; box-shadow:0 9px 0 #d0e6fa,0 15px 25px rgba(0,28,75,.28); cursor:pointer; transition:transform .18s ease; }
+    .play-button:hover { transform:translateY(-4px) scale(1.04); }
+    .game-shell { width:100%; max-width:1280px; margin:0 auto; animation:rise .45s ease-out; }
+    .topbar { display:flex; align-items:center; justify-content:center; padding:15px 20px; border:2px solid rgba(23,52,94,.1); border-radius:22px; background:rgba(255,255,255,.94); box-shadow:0 10px 30px rgba(42,94,128,.09); text-align:center; }
+    .topbar h1 { margin:0; font-family:"Fredoka",sans-serif; }
+    .topbar p { margin:3px 0 0; }
+    .game-layout { display:grid; grid-template-columns:minmax(0,1fr) 275px; gap:22px; margin-top:20px; align-items:start; }
+    .play-panel,.guide-panel,.algorithm-panel { border:2px solid rgba(23,52,94,.1); border-radius:26px; background:rgba(255,255,255,.94); box-shadow:0 13px 30px rgba(42,94,128,.1); }
+    .play-panel { padding:22px; }
+    .board-wrap { display:flex; justify-content:center; padding:0 0 20px; }
+    .board { display:grid; grid-template-columns:repeat(6,1fr); width:min(100%,535px); aspect-ratio:1; gap:5px; padding:9px; border-radius:24px; background:#73b94d; box-shadow:inset 0 0 0 4px rgba(255,255,255,.65),0 10px 0 #4a963f; }
+    .cell { min-width:0; min-height:0; position:relative; display:flex; justify-content:center; align-items:center; border:2px solid rgba(73,140,62,.23); border-radius:12px; background:var(--grass); font-size:clamp(24px,4vw,42px); }
+    .cell::after { content:""; position:absolute; width:6px; height:6px; bottom:7px; right:7px; border-radius:50%; background:rgba(76,155,69,.27); }
+    .cell.obstacle { background:#9b7049; border-color:#745033; }
+    .cell.obstacle::before { content:"🪵"; z-index:2; }
+    .cell.goal { background:#fff5c9; border-color:#ffc843; box-shadow:inset 0 0 0 3px rgba(255,196,47,.3); }
+    .cell.goal::before { content:"🥕"; z-index:2; }
+    .cell.rabbit { background:#d8f0ff; border-color:#5baee3; animation:hop .45s ease; }
+    .cell.rabbit::before { content:"🐰"; z-index:3; }
+    .controls-title { margin:0 0 12px; text-align:center; font-family:"Fredoka",sans-serif; }
+    .direction-grid { display:grid; grid-template-columns:repeat(3,minmax(70px,110px)); justify-content:center; gap:10px; }
+    .direction-button,.action-button { border:none; font-weight:800; cursor:pointer; transition:transform .17s ease,filter .17s ease; }
+    .direction-button { min-height:60px; display:flex; align-items:center; justify-content:center; gap:7px; color:#fff; background:#3684cf; border-radius:15px; box-shadow:0 5px 0 #1c5c9e; }
+    .direction-button:hover,.action-button:hover { transform:translateY(-2px); filter:brightness(1.05); }
+    .direction-button:active,.action-button:active { transform:translateY(3px); box-shadow:none; }
+    .up { grid-column:2; } .left { grid-column:1;grid-row:2; } .down { grid-column:2;grid-row:2; } .right { grid-column:3;grid-row:2; }
+    .action-row { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:10px; margin-top:18px; }
+    .action-button { min-height:54px; border-radius:15px; }
+    .start-button { color:#fff; background:#ff8b1f; box-shadow:0 5px 0 #c9620e; }
+    .undo-button { color:#fff; background:#5a79a0; box-shadow:0 5px 0 #3d5a7d; }
+    .reset-button { color:var(--navy); background:#e7f0f7; box-shadow:0 5px 0 #bdcfdd; }
+    .guide-panel { position:sticky; top:16px; padding:17px; text-align:center; background:linear-gradient(180deg,#e8f6ff,#fff); }
+    .robi-image { width:100%; height:195px; object-fit:contain; object-position:center; margin-bottom:7px; }
+    .speech { position:relative; min-height:108px; padding:16px 14px; border:2px solid #b8dcf5; border-radius:18px; background:#fff; color:var(--navy); text-align:left; font-weight:700; line-height:1.42; }
+    .speech::before { content:""; position:absolute; top:-10px; left:50%; width:17px; height:17px; background:#fff; border-top:2px solid #b8dcf5; border-left:2px solid #b8dcf5; transform:translateX(-50%) rotate(45deg); }
+    .algorithm-panel { margin-top:22px; padding:20px; background:#fffdf4; }
+    .algorithm-heading { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:14px; }
+    .algorithm-heading h2 { margin:0; font-family:"Fredoka",sans-serif; }
+    .counter-pill { padding:8px 12px; border-radius:99px; background:#e9f3fa; color:#35516f; font-weight:800; white-space:nowrap; }
+    .command-list { min-height:78px; display:grid; grid-template-columns:repeat(8,minmax(42px,1fr)); gap:9px; align-items:center; padding:12px; border:2px dashed #c9dce9; border-radius:17px; background:rgba(255,255,255,.8); }
+    .command-slot { min-height:48px; display:flex; align-items:center; justify-content:center; border:2px dashed #b7cfdf; border-radius:12px; color:#8aa0b2; background:#f5fbff; font-weight:800; transition:background .17s ease,border-color .17s ease,transform .17s ease; }
+    .command-slot.drag-over { border-color:#ff8b1f; background:#fff2df; transform:scale(1.05); }
+    .empty-algorithm { grid-column:1/-1; width:100%; text-align:center; color:#6f8498; font-weight:600; }
+    .command-card { width:100%; min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:7px 5px; border:1px solid #b6dff6; border-radius:12px; color:var(--navy); background:#dff2ff; font-weight:800; animation:cardPop .22s ease-out; cursor:grab; }
+    .command-card:active { cursor:grabbing; }
+    .command-card .command-label { display:none; }
+    @media(max-width:580px){ .command-list{grid-template-columns:repeat(4,minmax(42px,1fr));} }
+    .command-number { width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#3887c8; color:#fff; font-size:12px; }
+    .bottom-note { margin:15px 0 0; text-align:center; color:#597287; font-weight:600; }
+    .finish-overlay { position:fixed; inset:0; z-index:20; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(19,47,80,.57); backdrop-filter:blur(4px); }
+    .finish-overlay.show { display:flex; }
+    .finish-card { width:min(100%,440px); padding:34px 28px; border:6px solid #ffcb45; border-radius:28px; text-align:center; background:#fffdf4; box-shadow:0 20px 50px rgba(0,23,57,.32); animation:rise .35s ease-out; }
+    .finish-card h2 { margin:0 0 10px; font-family:"Fredoka",sans-serif; color:#24571e; font-size:30px; }
+    .finish-card p { margin:0 0 23px; color:#35516f; font-size:20px; font-weight:800; }
+    .finish-reset { border:none; padding:13px 22px; border-radius:14px; color:#fff; background:#1565c0; box-shadow:0 5px 0 #0e4d93; font-weight:800; cursor:pointer; }
+    .hidden { display:none !important; }
+    @keyframes hop { 0%{transform:scale(.72) translateY(5px)} 55%{transform:scale(1.12) translateY(-5px)} 100%{transform:scale(1)} }
+    @keyframes cardPop { from{opacity:0;transform:scale(.76)} to{opacity:1;transform:scale(1)} }
+    @keyframes rise { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+    @media(max-width:850px){ .game-layout{grid-template-columns:1fr}.guide-panel{position:static;display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center}.robi-image{height:135px;margin:0}.speech::before{left:-10px;top:50%;transform:translateY(-50%) rotate(-45deg)} }
+    @media(max-width:580px){ .app-wrapper{padding:12px}.welcome-card{padding:34px 18px}.welcome-logo-box{width:178px;height:84px}.play-panel{padding:15px}.direction-grid{grid-template-columns:repeat(3,minmax(66px,1fr))}.action-row{grid-template-columns:1fr}.guide-panel{grid-template-columns:105px 1fr;padding:13px}.robi-image{height:100px}.algorithm-heading{align-items:flex-start;flex-direction:column}.finish-card{padding:28px 20px} }
+  </style>
+  <script src="/codelet/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..hBANbWAdAsg6BH-K.aEJFuIS5A62YOLPDGD6vxjV4bvB8kYf-kYrqcJ4jGdDidu03gDyVuLDDrfpyZtBxKBW_AfjYj2GDl4DlUY_vzIWvgvuseuPqqsH6xYaYXrXLw8VS9M_KI-_KCxk87Mh4RWIrWut9xLqzjEAmHRFgeUBODchSGwHfRSU1W5yudwnodjuJ9yxW32Sm-ckkkl8fnOX_5hoqk4FCD6Xh1mzqbqLb2sVV-N2G61EZEKvRJecT7p60V2hzqGEstLjWWYueNBI2mwKpiYdKzyiCSRVz7gJbaNXxbco85ghnxM-5ZB3NSOtsS3VDBOE83hJ_387yLiE-lNFGuSBhqQay_x5Ovrbz6Hmvi8tU1_fTbqbc2erEUXOw9JRx4y1kG8Tx4BgsVxRDakgdsNjoSQgbduLwcsvqx1klQPYkQcBQpGFRY3yNgTry9hh2ji8PVy1IhsvIgnIX6jwLdzjp8QLkwOU_RVVbJkVj3s3RDlypdKbg-Knv3aBbYpPMAm4V4RuBGnWoRJBQ4G_z9-NvxhQk-W9OwMvPX3757PRdScRstXa_mcMo_ru4gEIuBOiOKmfNOVOXfQfoauC0L2m-_YaMhlK_Rv2imc8WcYdvqT5C.vKsVZ0fsOhBcf1nzN5wM3w/data_sdk.js?pin_id=c014ccc3c339735838d177ccab40e974" type="text/javascript"></script>
+  <script src="/codelet/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..hBANbWAdAsg6BH-K.aEJFuIS5A62YOLPDGD6vxjV4bvB8kYf-kYrqcJ4jGdDidu03gDyVuLDDrfpyZtBxKBW_AfjYj2GDl4DlUY_vzIWvgvuseuPqqsH6xYaYXrXLw8VS9M_KI-_KCxk87Mh4RWIrWut9xLqzjEAmHRFgeUBODchSGwHfRSU1W5yudwnodjuJ9yxW32Sm-ckkkl8fnOX_5hoqk4FCD6Xh1mzqbqLb2sVV-N2G61EZEKvRJecT7p60V2hzqGEstLjWWYueNBI2mwKpiYdKzyiCSRVz7gJbaNXxbco85ghnxM-5ZB3NSOtsS3VDBOE83hJ_387yLiE-lNFGuSBhqQay_x5Ovrbz6Hmvi8tU1_fTbqbc2erEUXOw9JRx4y1kG8Tx4BgsVxRDakgdsNjoSQgbduLwcsvqx1klQPYkQcBQpGFRY3yNgTry9hh2ji8PVy1IhsvIgnIX6jwLdzjp8QLkwOU_RVVbJkVj3s3RDlypdKbg-Knv3aBbYpPMAm4V4RuBGnWoRJBQ4G_z9-NvxhQk-W9OwMvPX3757PRdScRstXa_mcMo_ru4gEIuBOiOKmfNOVOXfQfoauC0L2m-_YaMhlK_Rv2imc8WcYdvqT5C.vKsVZ0fsOhBcf1nzN5wM3w/resizing_sdk.js?pin_id=c014ccc3c339735838d177ccab40e974" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root">
+  <section id="welcome-screen" data-template-id="welcome-screen" class="welcome-screen canva-section" aria-label="Karşılama ekranı">
+   <div class="welcome-card">
+    <div class="welcome-logo-box"><img data-template-id="welcome-logo" class="canva-image" loading="lazy">
+    </div>
+    <h1 data-template-id="welcome-title" class="canva-text"></h1>
+    <p data-template-id="welcome-subtitle" class="canva-text"></p><button id="play-button" data-template-id="play-button" class="play-button canva-button" type="button" aria-label="Oyunu başlat"> <i data-lucide="play" aria-hidden="true" style="width:42px;height:42px;fill:currentColor;"></i> </button>
+   </div>
+  </section>
+  <div id="game-screen" class="app-wrapper hidden">
+   <div class="game-shell">
+    <header data-template-id="game-header" class="topbar canva-header">
+     <div>
+      <h1 data-template-id="game-title" class="canva-text"></h1>
+      <p data-template-id="game-subtitle" class="canva-text"></p>
+     </div>
+    </header>
+    <main>
+     <div class="game-layout">
+      <section class="play-panel" aria-label="Havuç ve tavşan oyun alanı">
+       <div class="board-wrap">
+        <div id="game-board" class="board" role="grid" aria-label="Tavşan oyun tahtası"></div>
+       </div>
+       <h2 data-template-id="controls-title" class="controls-title canva-text"></h2>
+       <div class="direction-grid" aria-label="Yön komutları"><button data-template-id="up-button" class="direction-button canva-button up" type="button" draggable="true" data-direction="up"> <i data-lucide="arrow-up" aria-hidden="true" style="width:20px;height:20px;"></i><span data-template-id="up-text" class="canva-text"></span> </button> <button data-template-id="left-button" class="direction-button canva-button left" type="button" draggable="true" data-direction="left"> <i data-lucide="arrow-left" aria-hidden="true" style="width:20px;height:20px;"></i><span data-template-id="left-text" class="canva-text"></span> </button> <button data-template-id="down-button" class="direction-button canva-button down" type="button" draggable="true" data-direction="down"> <i data-lucide="arrow-down" aria-hidden="true" style="width:20px;height:20px;"></i><span data-template-id="down-text" class="canva-text"></span> </button> <button data-template-id="right-button" class="direction-button canva-button right" type="button" draggable="true" data-direction="right"> <i data-lucide="arrow-right" aria-hidden="true" style="width:20px;height:20px;"></i><span data-template-id="right-text" class="canva-text"></span> </button>
+       </div>
+       <div class="action-row"><button id="start-button" data-template-id="start-button" class="action-button start-button canva-button" type="button"></button> <button id="undo-button" data-template-id="undo-button" class="action-button undo-button canva-button" type="button"></button> <button id="reset-button" data-template-id="reset-button" class="action-button reset-button canva-button" type="button"></button>
+       </div>
+      </section>
+      <aside data-template-id="guide-panel" class="guide-panel canva-panel" aria-label="Robi rehberi"><img data-template-id="robi-character" class="robi-image canva-image" loading="lazy">
+       <div id="robi-speech" class="speech" aria-live="polite"></div>
+      </aside>
+     </div>
+     <section data-template-id="algorithm-panel" class="algorithm-panel canva-panel" aria-label="Algoritman">
+      <div class="algorithm-heading">
+       <h2 data-template-id="algorithm-title" class="canva-text"></h2><span id="command-counter" class="counter-pill" aria-live="polite">0 komut</span>
+      </div>
+      <div id="command-list" class="command-list" aria-live="polite">
+       <p data-template-id="algorithm-empty" id="algorithm-empty" class="empty-algorithm canva-text"></p>
+      </div>
+      <p data-template-id="bottom-note" class="bottom-note canva-text"></p>
+     </section>
+    </main>
+   </div>
+  </div>
+  <div id="finish-overlay" class="finish-overlay" role="dialog" aria-modal="true" aria-labelledby="finish-title">
+   <div class="finish-card">
+    <h2 id="finish-title">Harika İş!</h2>
+    <p id="finish-count"></p><button id="finish-reset" data-template-id="finish-reset" class="finish-reset canva-button" type="button"></button>
+   </div>
+  </div>
+  <script src="/codelet/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..hBANbWAdAsg6BH-K.aEJFuIS5A62YOLPDGD6vxjV4bvB8kYf-kYrqcJ4jGdDidu03gDyVuLDDrfpyZtBxKBW_AfjYj2GDl4DlUY_vzIWvgvuseuPqqsH6xYaYXrXLw8VS9M_KI-_KCxk87Mh4RWIrWut9xLqzjEAmHRFgeUBODchSGwHfRSU1W5yudwnodjuJ9yxW32Sm-ckkkl8fnOX_5hoqk4FCD6Xh1mzqbqLb2sVV-N2G61EZEKvRJecT7p60V2hzqGEstLjWWYueNBI2mwKpiYdKzyiCSRVz7gJbaNXxbco85ghnxM-5ZB3NSOtsS3VDBOE83hJ_387yLiE-lNFGuSBhqQay_x5Ovrbz6Hmvi8tU1_fTbqbc2erEUXOw9JRx4y1kG8Tx4BgsVxRDakgdsNjoSQgbduLwcsvqx1klQPYkQcBQpGFRY3yNgTry9hh2ji8PVy1IhsvIgnIX6jwLdzjp8QLkwOU_RVVbJkVj3s3RDlypdKbg-Knv3aBbYpPMAm4V4RuBGnWoRJBQ4G_z9-NvxhQk-W9OwMvPX3757PRdScRstXa_mcMo_ru4gEIuBOiOKmfNOVOXfQfoauC0L2m-_YaMhlK_Rv2imc8WcYdvqT5C.vKsVZ0fsOhBcf1nzN5wM3w/editing_sdk.js?pin_id=c014ccc3c339735838d177ccab40e974"></script>
+  <script>
+    const level = {
+      start: { row: 5, col: 0 },
+      goal: { row: 0, col: 5 },
+      obstacles: [
+        { row: 4, col: 1 }, { row: 3, col: 1 }, { row: 2, col: 1 },
+        { row: 1, col: 1 },
+        { row: 1, col: 3 }, { row: 2, col: 3 }, { row: 3, col: 3 },
+        { row: 4, col: 3 }, { row: 4, col: 4 }, { row: 3, col: 5 }
+      ]
+    };
+    const directions = {
+      up: { row:-1, col:0, symbol:"↑", name:"Yukarı" },
+      down: { row:1, col:0, symbol:"↓", name:"Aşağı" },
+      left: { row:0, col:-1, symbol:"←", name:"Sol" },
+      right: { row:0, col:1, symbol:"→", name:"Sağ" }
+    };
+    const board = document.getElementById("game-board");
+    const commandList = document.getElementById("command-list");
+    const emptyAlgorithm = document.getElementById("algorithm-empty");
+    const counter = document.getElementById("command-counter");
+    const speech = document.getElementById("robi-speech");
+    const finishOverlay = document.getElementById("finish-overlay");
+    const finishCount = document.getElementById("finish-count");
+    const directionButtons = [...document.querySelectorAll("[data-direction]")];
+    const controls = [...directionButtons, document.getElementById("start-button"), document.getElementById("undo-button"), document.getElementById("reset-button")];
+
+    let commands = [];
+    let rabbit = { ...level.start };
+    let running = false;
+    let finished = false;
+
+    function same(a, b) { return a.row === b.row && a.col === b.col; }
+    function hasObstacle(row, col) { return level.obstacles.some(item => item.row === row && item.col === col); }
+    function setSpeech(text) { speech.textContent = text; }
+
+    function drawBoard() {
+      board.replaceChildren();
+      for (let row = 0; row < 6; row++) {
+        for (let col = 0; col < 6; col++) {
+          const cell = document.createElement("div");
+          const position = { row, col };
+          cell.className = "cell";
+          cell.setAttribute("role", "gridcell");
+          if (hasObstacle(row, col)) { cell.classList.add("obstacle"); cell.setAttribute("aria-label", "Ağaç engeli"); }
+          if (same(position, level.goal)) { cell.classList.add("goal"); cell.setAttribute("aria-label", "Havuç hedefi"); }
+          if (same(position, rabbit)) { cell.classList.add("rabbit"); cell.setAttribute("aria-label", "Tavşan"); }
+          board.appendChild(cell);
+        }
+      }
+    }
+
+    function renderCommands() {
+      commandList.replaceChildren();
+      for (let index = 0; index < 16; index++) {
+        const slot = document.createElement("div");
+        slot.className = "command-slot";
+        slot.dataset.slot = index;
+        if (commands[index]) {
+          const command = commands[index];
+          slot.classList.add("command-card");
+          slot.draggable = true;
+          slot.innerHTML = '<span class="command-number">' + (index + 1) + '</span><span class="command-label">' + directions[command].name + '</span><span>' + directions[command].symbol + '</span>';
+          slot.addEventListener("dragstart", event => event.dataTransfer.setData("text/plain", command));
+        } else {
+          slot.textContent = index + 1;
+          slot.addEventListener("dragover", event => { event.preventDefault(); slot.classList.add("drag-over"); });
+          slot.addEventListener("dragleave", () => slot.classList.remove("drag-over"));
+          slot.addEventListener("drop", event => {
+            event.preventDefault();
+            const direction = event.dataTransfer.getData("text/plain");
+            if (direction && !running && !finished) { commands[index] = direction; renderCommands(); setSpeech(directions[direction].name + " yönünü kareye bıraktın."); }
+          });
+        }
+        commandList.appendChild(slot);
+      }
+      emptyAlgorithm.style.display = commands.length ? "none" : "block";
+      if (!commands.length) commandList.appendChild(emptyAlgorithm);
+      counter.textContent = commands.length + " komut";
+    }
+
+    function setControlsDisabled(disabled) {
+      running = disabled;
+      controls.forEach(control => {
+        control.disabled = disabled;
+        control.style.opacity = disabled ? ".58" : "1";
+        control.style.cursor = disabled ? "not-allowed" : "pointer";
+      });
+    }
+
+    function resetGame(message) {
+      commands = [];
+      rabbit = { ...level.start };
+      finished = false;
+      finishOverlay.classList.remove("show");
+      renderCommands();
+      drawBoard();
+      setSpeech(message || "Yönleri sırayla seç. Seçtiğin her yön aşağıda görünecek. Hazır olduğunda BAŞLA!");
+    }
+
+    function addCommand(direction) {
+      if (running || finished) return;
+      commands.push(direction);
+      renderCommands();
+      setSpeech(directions[direction].name + " yönünü ekledin. Algoritman aşağıda görünür, devam edebilirsin!");
+    }
+
+    function undoCommand() {
+      if (running || finished) return;
+      if (!commands.length) {
+        setSpeech("Geri alacak komut yok. Önce bir yön seçmelisin.");
+        return;
+      }
+      commands.pop();
+      renderCommands();
+      setSpeech("Son yön komutunu geri aldın. Yeni bir yön seçebilirsin.");
+    }
+
+    function wait(time) { return new Promise(resolve => setTimeout(resolve, time)); }
+
+    async function startGame() {
+      if (running || finished) return;
+      if (!commands.length) {
+        setSpeech("Önce yönleri seçmelisin. Seçtiğin yönler algoritman alanında sıralanır.");
+        return;
+      }
+      rabbit = { ...level.start };
+      drawBoard();
+      setControlsDisabled(true);
+      setSpeech("Başladık! Tavşanın hareketini dikkatle izle.");
+
+      for (const command of commands) {
+        await wait(560);
+        const nextRow = rabbit.row + directions[command].row;
+        const nextCol = rabbit.col + directions[command].col;
+
+        if (nextRow < 0 || nextRow > 5 || nextCol < 0 || nextCol > 5) {
+          setSpeech("Bu komut tavşanı tahtanın dışına çıkarır. Algoritmanı kontrol edip tekrar dene.");
+          await wait(850);
+          continue;
+        }
+        if (hasObstacle(nextRow, nextCol)) {
+          setSpeech("Dikkat! Tavşan ağacın içinden geçemez. Yönergelerini değiştirip tekrar dene.");
+          await wait(850);
+          continue;
+        }
+
+        rabbit = { row:nextRow, col:nextCol };
+        drawBoard();
+
+        if (same(rabbit, level.goal)) {
+          finished = true;
+          setSpeech("Harika! Tavşan havuca ulaştı.");
+          finishCount.textContent = "Havuç'a " + commands.length + " komut kullanarak ulaştın!";
+          await wait(450);
+          finishOverlay.classList.add("show");
+          break;
+        }
+      }
+
+      if (!finished) setSpeech("Tavşan henüz havuca ulaşamadı. Komutlarını geri alabilir veya sıfırlayıp yeniden deneyebilirsin.");
+      setControlsDisabled(false);
+    }
+
+    document.getElementById("play-button").addEventListener("click", () => {
+      document.getElementById("welcome-screen").classList.add("hidden");
+      document.getElementById("game-screen").classList.remove("hidden");
+      resetGame();
+    });
+    directionButtons.forEach(button => {
+      button.addEventListener("click", () => addCommand(button.dataset.direction));
+      button.addEventListener("dragstart", event => event.dataTransfer.setData("text/plain", button.dataset.direction));
+    });
+    document.getElementById("start-button").addEventListener("click", startGame);
+    document.getElementById("undo-button").addEventListener("click", undoCommand);
+    document.getElementById("reset-button").addEventListener("click", () => { if (!running) resetGame("Tahta hazır! Yeni algoritmanı oluşturmaya başlayabilirsin."); });
+    document.getElementById("finish-reset").addEventListener("click", () => resetGame("Yeni bir yol deneyelim! Yönlerini seç ve tavşanı havuca ulaştır."));
+    lucide.createIcons();
+    drawBoard();
+  </script>
+ </body>
+</html>
